@@ -172,6 +172,16 @@ def main():
         template = load_template(template_path)
     else:
         print(f"⚠️  No matching template found, creating custom draft...")
+        # Determine tone based on platform
+        if args.platform == "quora":
+            tone = "Authoritative, detailed (Quora)"
+        elif args.platform == "reddit":
+            tone = "Conversational, helpful (Reddit)"
+        elif args.platform == "twitter":
+            tone = "Punchy, data-driven (Twitter)"
+        else:
+            tone = "Casual, shareable (Facebook)"
+        
         template = f"""[Custom draft needed for: {args.question}]
 
 **Key points to cover:**
@@ -180,11 +190,11 @@ def main():
 3. [Testudo Legion methodology tie-in]
 4. [CTA: GitHub track record / Telegram community]
 
-**Tone:** {"Authoritative, detailed (Quora)" if args.platform == "quora" else "Conversational, helpful (Reddit)" if args.platform == "reddit" else "Punchy, data-driven (Twitter)" else "Casual, shareable (Facebook)"}
+**Tone:** {tone}
 
 ---
 
-*Draft this answer based on the question above, then save to content-bank/{args.platform}/*""""
+*Draft this answer based on the question above, then save to content-bank/{args.platform}/*"""
     
     # Adapt for platform
     draft_content = adapt_template(template, args.platform, args.question)
